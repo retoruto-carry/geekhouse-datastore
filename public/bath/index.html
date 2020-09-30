@@ -31,7 +31,9 @@
   <body>
     <div class="container">
       <h1 class="title">お風呂</h1>
-      <img src="./images/ofuro_ahiru.png" height="250px"/>
+      <div id="image" class="image">
+        <img src="./images/ofuro.png" height="250px"/>
+      </div>
       <div id="indicator" class="indicator">
         <p class="loading">読み込み中...</p>
       </div>
@@ -46,6 +48,7 @@
           bathRef.onSnapshot((doc) => {
             const isUsing = doc.data().data.using;
             document.getElementById('indicator').innerHTML = isUsing ? '<img src="./images/text_room_shiyouchu.png">' : '<img src="./images/text_room_kushitsu.png" height="200px" />';
+            document.getElementById('image').innerHTML = isUsing ? '<img src="./images/ofuro_ahiru.png" height="250px">' : '<img src="./images/ofuro.png" height="250px">';
           })
         } catch (e) {
           console.error(e);
