@@ -9,7 +9,15 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "headers": [{
+      "source": "images/*.@(jpg|jpeg|gif|png)",
+      "headers": [{
+        "source": "**/*",
+        "key": "Cache-Control",
+        "value": "max-age=900"
+      }]
+    }]
   },
   "functions": {
     "predeploy": [
