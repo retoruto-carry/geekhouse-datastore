@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <title>ドア</title>
+  <style>
+    body {
+      font-family: 'Miriam Libre', sans-serif;
+    }
+    .clock {
+      font-size: 12em;
+    }
+    .clock-second {
+      font-size: 5em;
+    }
+  </style>
+  <script>
+      const users = {
+        'retoruto_carry': {
+          username: 'れとるときゃりー',
+          icon: 'retoruto_carry.png'
+        },
+        'wamisnet': {
+          username: 'わみ',
+          icon: 'wamisnet.jpg'
+        }
+      };
+      document.addEventListener('DOMContentLoaded', function() {
+        const url = new URL(location.href);
+        const userId = url.searchParams.get("userId");
+        console.log(userId)
+        console.log(users[userId]);
+        document.getElementById('username').innerHTML = users[userId].username;
+        document.getElementById('icon').src = `./images/icons/${users[userId].icon}`;
+      });
+  </script>
+</head>
+
+<body>
+  <div class="w-full h-screen flex justify-center items-center bg-white relative">
+    <p class="absolute top-0 mt-48 text-indigo-600 text-3xl animate__animated animate__fadeInUp"><span class="mr-4">🎉</span>Welcome back!</p>
+    <div class="w-full">
+      <div class="flex justify-center items-center w-full p-16 bg-indigo-700 animate__animated animate__backInLeft">
+        <img src="images/icons/retoruto_carry.png" class="h-48 rounded-full mr-16 animate__animated animate__fadeInUp" id="icon"/>
+        <div class="text-white">
+          <p class="font-bold text-6xl text-white animate__animated animate__fadeInUp animate__slow" id="username">れとるときゃりー</p>
+          <p class="text-4xl text-white animate__animated animate__fadeInUp animate__slower">came back home now!</p>
+        </div>
+      </div>
+    </div>
+    <p class="absolute bottom-0 mb-48 text-indigo-600 text-3xl animate__animated animate__fadeInUp animate__slow animate__delay-2s"><span class="mr-4">👏</span>おかえりなさい</p>
+  </div>
+</body>
+
+</html>
