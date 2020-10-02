@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+  <title>デジタル時計</title>
+  <style>
+    body {
+      font-family: 'Miriam Libre', sans-serif;
+    }
+    .clock {
+      font-size: 12em;
+    }
+    .clock-second {
+      font-size: 5em;
+    }
+  </style>
+  <script>
+    function digitalClock() {
+      let now = new Date();
+      let hour = now.getHours();
+      let minute = now.getMinutes();
+      let second = now.getSeconds();
+
+      // 0埋めで2桁表示にする　例）08:45:09
+      if (hour < 10) hour = "0" + hour;
+      if (minute < 10) minute = "0" + minute;
+      if (second < 10) second = "0" + second;
+
+      // 現在時刻を表示する
+      const clock = document.getElementById("clock");
+      const clockSecond = document.getElementById("clock-second");
+      clock.innerHTML = hour + ":" + minute;
+      clockSecond.innerHTML = second;
+
+      setTimeout(digitalClock, 500);
+    }
+
+    window.onload = function () {
+      digitalClock();
+    }
+  </script>
+</head>
+
+<body>
+  <div class="bg-white w-full h-full h-screen">
+    <div class="bg-indigo-400 w-full h-full animate__animated animate__fadeInDownBig animate__slower">
+      <div class="bg-indigo-700 w-full h-full animate__animated animate__fadeInDownBig animate__slower">
+        <div class="w-full h-full flex justify-center items-center animate__animated animate__fadeInDown animate__slower animate__delay-2s">
+          <div>
+            <p>
+              <span class="clock font-bold text-white" id="clock"></span>
+              <span class="clock-second font-bold text-white ml-8" id="clock-second"></span>
+            </p>
+            <div class="flex justify-center items-center animate__animated animate__fadeInUp animate__slower animate__delay-4s">
+              <img src="images/logo-white.png" class="h-8 mr-4" />
+              <p class="text-white font-bold text-4xl text-center">
+                GeekHouse Board System
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>
