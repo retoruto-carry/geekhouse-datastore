@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+    <title>ロゴ</title>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        margin: 0;
+        background-color: #191CA9;
+      }
+
+      .logo {
+        margin: auto;
+        margin-top: 3em;
+        width: 40%;
+
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+
+        z-index: 10;
+      }
+      .lightblue {
+        background-color: lightblue;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .white {
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+      }
+
+      .waves {
+        position: absolute;
+
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 0;
+
+        background-color: #fff;
+        width: 100%;
+        height: 200px;
+        margin-bottom: -7px; /* Fix for safari gap */
+        min-height: 40px;
+        max-height: 150px;
+      }
+
+      /* Animation */
+
+      .parallax > use {
+        animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+      }
+      .parallax > use:nth-child(1) {
+        animation-delay: -2s;
+        animation-duration: 7s;
+      }
+      .parallax > use:nth-child(2) {
+        animation-delay: -3s;
+        animation-duration: 10s;
+      }
+      .parallax > use:nth-child(3) {
+        animation-delay: -4s;
+        animation-duration: 13s;
+      }
+      .parallax > use:nth-child(4) {
+        animation-delay: -5s;
+        animation-duration: 20s;
+      }
+      @keyframes move-forever {
+        0% {
+          transform: translate3d(-90px, 0, 0);
+        }
+        100% {
+          transform: translate3d(85px, 0, 0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+      <div class="lightblue animate__animated animate__fadeInLeftBig">
+        <div class="white animate__animated animate__fadeInLeftBig">
+          <div class="animate__animated animate__jello animate__delay-5s">
+            <img class="logo animate__animated animate__fadeInUpBig animate__delay-1s" src="./images/logo.png"/>
+          </div>
+        </div>
+        <svg class="waves animate__animated animate__fadeInUp animate__delay-3s animate__slow" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28"
+            preserveaspectratio="none" shape-rendering="auto">
+            <defs>
+              <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="parallax">
+              <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(25,28,169,0.6)" />
+              <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(25,28,169,0.3)" />
+              <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(25,28,169,0.5)" />
+              <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(25,28,169)" />
+            </g>
+          </svg>
+      </div>
+    <script>
+    </script>
+  </body>
+</html>
