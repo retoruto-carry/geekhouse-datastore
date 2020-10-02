@@ -12,6 +12,13 @@
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <title>ドア</title>
   <style>
+    img.emoji {
+      height: 1em;
+      width: 1em;
+      margin: 0 .05em 0 .1em;
+      vertical-align: -0.1em;
+      display: inline;
+    }
     body {
       font-family: 'Miriam Libre', sans-serif;
     }
@@ -23,31 +30,32 @@
     }
   </style>
   <script>
-      const users = {
-        'retoruto_carry': {
-          username: 'れとるときゃりー',
-          icon: 'retoruto_carry.png'
-        },
-        'wamisnet': {
-          username: 'わみ',
-          icon: 'wamisnet.jpg'
-        }
-      };
-      document.addEventListener('DOMContentLoaded', function() {
-        const url = new URL(location.href);
-        const userId = url.searchParams.get("userId");
-        console.log(userId)
-        console.log(users[userId]);
-        document.getElementById('username').innerHTML = users[userId].username;
-        document.getElementById('icon').src = `./images/icons/${users[userId].icon}`;
-      });
+    const users = {
+      'retoruto_carry': {
+        username: 'れとるときゃりー',
+        icon: 'retoruto_carry.png'
+      },
+      'wamisnet': {
+        username: 'わみ',
+        icon: 'wamisnet.jpg'
+      }
+    };
+    document.addEventListener('DOMContentLoaded', function() {
+      twemoji.parse(document.body);
+      const url = new URL(location.href);
+      const userId = url.searchParams.get("userId");
+      console.log(userId)
+      console.log(users[userId]);
+      document.getElementById('username').innerHTML = users[userId].username;
+      document.getElementById('icon').src = `./images/icons/${users[userId].icon}`;
+    });
   </script>
 </head>
 
 <body>
   <div class="w-full h-screen flex justify-center items-center bg-white relative">
     <div class="w-full">
-      <p class="mb-12 text-center text-indigo-600 text-3xl animate__animated animate__fadeInUp"><span class="mr-4">🎉</span>Welcome back!</p>
+      <p class="mb-12 text-center text-indigo-600 text-3xl animate__animated animate__fadeInUp"><span class="mr-4 inline">🎉</span>Welcome back!</p>
       <div class="flex justify-center items-center w-full p-16 bg-indigo-700 animate__animated animate__backInLeft">
         <img src="images/icons/retoruto_carry.png" class="h-48 rounded-full mr-16 animate__animated animate__fadeInUp" id="icon"/>
         <div class="text-white">
