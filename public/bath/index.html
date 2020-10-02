@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ぎーじゅくおふろリアルタイム表示</title>
+    <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/7.21.1/firebase-app.js"></script>
@@ -11,16 +13,25 @@
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+
     <style>
+      body {
+        font-family: 'Miriam Libre', sans-serif;
+      }
       .container {
         text-align: center;
       }
       .title {
-        margin-top: 1em;
-        font-size: 3em;
+        margin-top: 2em;
+        font-size: 4em;
+        color: white;
+        font-weight: bold;
       }
       .loading {
         font-size: 2em;
+        font-size: 4em;
+        color: white;
       }
       .indicator {
         margin-top: 1em;
@@ -29,17 +40,22 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">お風呂</h1>
+    <div class="container animate__animated animate__fadeInDown animate__slower">
+      <h1 class="title">Bath</h1>
       <div id="image" class="image">
         <img src="./images/ofuro.png" height="250px"/>
       </div>
       <div id="indicator" class="indicator">
-        <p class="loading">読み込み中...</p>
+        <p class="loading">...</p>
       </div>
     </div>
 
     <script>
+      bubbly({
+        colorStart: '#3841B5',
+        colorStop: '#251BA9',
+      });
+
       document.addEventListener('DOMContentLoaded', function() {
         try {
           let app = firebase.app();
