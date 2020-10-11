@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/7.21.1/firebase-app.js"></script>
+  <script defer src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
   <title>ドア</title>
   <style>
     img.emoji {
@@ -22,32 +27,25 @@
     body {
       font-family: 'Miriam Libre', sans-serif;
     }
-    .clock {
-      font-size: 12em;
-    }
-    .clock-second {
-      font-size: 5em;
-    }
   </style>
   <script>
-    const users = {
-      'retoruto_carry': {
-        username: 'れとるときゃりー',
-        icon: 'retoruto_carry.png'
-      },
-      'wamisnet': {
-        username: 'わみ',
-        icon: 'wamisnet.jpg'
-      }
-    };
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async () => {
+      // show emoji
       twemoji.parse(document.body);
+
+      // get user id from query parameter
       const url = new URL(location.href);
       const userId = url.searchParams.get("userId");
-      console.log(userId)
-      console.log(users[userId]);
-      document.getElementById('username').innerHTML = users[userId].username;
-      document.getElementById('icon').src = `./images/icons/${users[userId].icon}`;
+
+      const app = firebase.app();
+
+      const userDoc = await firebase.firestore().collection('users').doc(userId).get();
+      if(!userDoc.exists) {
+        console.log('Error: user not found');
+        return;
+      }
+      document.getElementById('username').innerHTML = userDoc.data().name;
+      document.getElementById('icon').src = userDoc.data().imageUrl;
     });
   </script>
 </head>
@@ -57,9 +55,9 @@
     <div class="w-full">
       <p class="mb-12 text-center text-indigo-600 text-3xl animate__animated animate__fadeInUp"><span class="mr-4 inline">🎉</span>Welcome back!</p>
       <div class="flex justify-center items-center w-full p-16 bg-indigo-700 animate__animated animate__backInLeft">
-        <img src="images/icons/retoruto_carry.png" class="h-48 rounded-full mr-16 animate__animated animate__fadeInUp" id="icon"/>
+        <img src="./images/blank-avatar.png" class="h-48 rounded-full mr-16 animate__animated animate__fadeInUp" id="icon"/>
         <div class="text-white">
-          <p class="font-bold text-6xl text-white animate__animated animate__fadeInUp animate__slow" id="username">れとるときゃりー</p>
+          <p class="font-bold text-6xl text-white animate__animated animate__fadeInUp animate__slow" id="username">Guest</p>
           <p class="text-4xl text-white animate__animated animate__fadeInUp animate__slower">came back home now!</p>
         </div>
       </div>
