@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/7.21.1/firebase-app.js"></script>
+  <script defer src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+  <title>レジ購入</title>
+  <style>
+    img.emoji {
+      height: 1em;
+      width: 1em;
+      margin: 0 .05em 0 .1em;
+      vertical-align: -0.1em;
+      display: inline;
+    }
+    body {
+      font-family: 'Miriam Libre', sans-serif;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // show emoji
+      twemoji.parse(document.body);
+
+      // get query parameter
+      const url = new URL(location.href);
+      const productName = url.searchParams.get("productName");
+      const sellUserId = url.searchParams.get("sellUserId");
+      const buyUserId = url.searchParams.get("buyUserId");
+
+      const app = firebase.app();
+
+      document.getElementById('product-name').innerText = productName;
+
+      const sellUsersSnapshot = await firebase.firestore().collection('users').where('barterId', '==', Number(sellUserId)).limit(1).get();
+      if (sellUsersSnapshot.size !== 0) {
+        document.getElementById('sell-user-icon').src = sellUsersSnapshot.docs[0].data().imageUrl;
+        document.getElementById('sell-user-name').innerText = sellUsersSnapshot.docs[0].data().name;
+      }
+
+      const buyUsersSnapshot = await firebase.firestore().collection('users').where('barterId', '==', Number(buyUserId)).limit(1).get();
+      if (buyUsersSnapshot.size !== 0) {
+        document.getElementById('buy-user-icon').src = buyUsersSnapshot.docs[0].data().imageUrl;
+        document.getElementById('buy-user-name').innerText = buyUsersSnapshot.docs[0].data().name;
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="w-full h-screen flex justify-center items-center bg-white relative">
+    <div class="w-full">
+      <img src="./images/blank-avatar.png" class="mb-12 mx-auto h-48 rounded-full animate__animated animate__flipInY animate__delay-1s" id="sell-user-icon"/>
+      <div class="w-full p-16 bg-indigo-700 animate__animated animate__fadeInUp">
+        <div class="text-white text-center">
+          <p class="text-4xl text-white animate__animated animate__fadeInUp animate__slow animate__delay-2s"><span id="sell-user-name">ゲスト</span>の商品</p>
+          <p class="my-8 font-bold text-5xl text-white animate__animated animate__fadeInUp" id="product-name">商品名</p>
+          <p class="text-4xl text-white animate__animated animate__fadeInUp animate__slow">が購入されました<span class="ml-4">🎉</span></p>
+        </div>
+      </div>
+      <p class="mt-12 text-center text-indigo-600 text-3xl animate__animated animate__fadeInUp animate__slow animate__delay-2s">
+        <span class="mr-4"><img id="buy-user-icon" src="./images/blank-avatar.png" class="h-8 rounded-full inline-block align-text-top"/></span>
+        <span id="buy-user-name">ゲスト</span>が購入
+        <span class="ml-4">🛒</span>
+      </p>
+    </div>
+  </div>
+</body>
+
+</html>
