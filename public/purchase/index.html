@@ -39,6 +39,8 @@
       const sellUserId = url.searchParams.get("sellUserId");
       const buyUserId = url.searchParams.get("buyUserId");
 
+      speechSynthesis.speak(new SpeechSynthesisUtterance( `${buyUserId}さんによって、商品が購入されました。商品めい、${productName}`));
+
       const app = firebase.app();
 
       document.getElementById('product-name').innerText = productName;
