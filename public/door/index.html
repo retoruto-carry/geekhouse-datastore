@@ -32,7 +32,11 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       // show confetti
-      const confettiSettings = { target: 'my-canvas' };
+      const confettiSettings = { 
+        target: 'my-canvas',
+        max: 180,
+        size: 1.4,
+      };
       const confetti = new ConfettiGenerator(confettiSettings);
       confetti.render();
 
