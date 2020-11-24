@@ -39,8 +39,6 @@
       const sellUserId = url.searchParams.get("sellUserId");
       const buyUserId = url.searchParams.get("buyUserId");
 
-      speechSynthesis.speak(new SpeechSynthesisUtterance( `${buyUserId}さんによって、商品が購入されました。商品めい、${productName}`));
-
       const app = firebase.app();
 
       document.getElementById('product-name').innerText = productName;
@@ -52,10 +50,17 @@
       }
 
       const buyUsersSnapshot = await firebase.firestore().collection('users').where('barterId', '==', Number(buyUserId)).limit(1).get();
+
+      let buyUserName = 'ゲスト'
+
       if (buyUsersSnapshot.size !== 0) {
+        buyUserName = buyUsersSnapshot.docs[0].data().name;
         document.getElementById('buy-user-icon').src = buyUsersSnapshot.docs[0].data().imageUrl;
-        document.getElementById('buy-user-name').innerText = buyUsersSnapshot.docs[0].data().name;
+        document.getElementById('buy-user-name').innerText = buyUserName;
       }
+
+      speechSynthesis.speak(new SpeechSynthesisUtterance( `${buyUserName}さんによって、商品が購入されました。商品めい、${productName}`));
+
     });
   </script>
 </head>
