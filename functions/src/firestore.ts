@@ -1,19 +1,18 @@
 import * as admin from "firebase-admin";
 admin.initializeApp();
 const firestore = admin.firestore()
-import { toTrade  } from './convert'
-import {Trade, Weather} from './type'
+import {toAlert} from './convert'
+import {Alert, Weather} from './type'
 
-export const getAlertsEvent = async (triggerHour: number): Promise<Trade[]> => {
+export const getAlertsEvents = async (triggerHour: number): Promise<Alert[]> => {
   const tradesDoc = await firestore
     .collection('alerts')
     .where('enabled', '==', true)
     .where('triggerHour', '==', triggerHour)
-    .orderBy('createdAt', 'desc')
     .get()
   return tradesDoc.docs.map(
-    (doc):Trade  => {
-      return toTrade(doc)
+    (doc):Alert  => {
+      return toAlert(doc)
     }
   )
 }

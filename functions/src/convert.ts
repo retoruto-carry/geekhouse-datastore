@@ -1,5 +1,5 @@
 import { DocumentNotExistError } from './error'
-import { Trade } from './type'
+import {Alert} from './type'
 
 type Document = FirebaseFirestore.DocumentSnapshot<
   FirebaseFirestore.DocumentData
@@ -8,16 +8,15 @@ type Document = FirebaseFirestore.DocumentSnapshot<
 export function toObject<T>(doc: Document): T {
   if (!doc.exists) throw new DocumentNotExistError()
   const obj: any = {
-    id: doc.id,
     ...doc.data()
   }
   return obj as T
 }
 
-export function toTrade(doc: Document): Trade {
+export function toAlert(doc: Document): Alert {
   const _doc: any = doc
   return {
     ...toObject<any>(doc),
-    date: _doc.data({ serverTimestamps: 'estimate' }).date.toDate()
+    createdAt: _doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate()
   }
 }

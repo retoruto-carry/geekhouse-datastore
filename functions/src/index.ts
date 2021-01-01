@@ -15,7 +15,8 @@ dayjs.tz.setDefault("Asia/Tokyo")
 import { log } from './logger'
 //import { sendMessage } from './slack'
 import {getWeather} from "./openWeather"
-import {setWeather, updateCachedValues} from "./firestore";
+import {getAlertsEvents, setWeather, updateCachedValues} from "./firestore";
+import {postWebSignage} from "./webSignage";
 
 //const DAYJS_FORMAT_STYLE = 'M/D'
 //const DAYJS_FORMAT_STYLE_TIMEZONE = 'MM月DD日 dddd HH:mm Z'
@@ -30,29 +31,15 @@ exports.scheduledFunction = functions.region('asia-northeast1').pubsub.schedule(
   }else{
     log('Weather Error')
   }
-  // NOTE: weekは日曜から始まる。つまりstartOf('week') は日曜日の00:00になる
-  // const lastWeekStart = dayjs().tz().startOf('week').subtract(1, 'week').add(1, 'day')
-  // const lastWeekEnd = dayjs().tz().endOf('week').subtract(1, 'week').add(1, 'day')
-  // log(`tradesデータの取得範囲: ${lastWeekStart.format(DAYJS_FORMAT_STYLE_TIMEZONE)} ~ ${lastWeekEnd.format(DAYJS_FORMAT_STYLE_TIMEZONE)}`)
 
- //  const trades = await getTradesBetween(lastWeekStart, lastWeekEnd)
- // // const users = await getAllUsers()
- //
- //  users.forEach(async user => {
- //    const sumPriceAccumulator = (acc:number, cur: Trade) => acc + cur.price
- //    const buyPriceSum = trades.filter(trade => trade.buyUserId === user.id).reduce(sumPriceAccumulator, 0)
- //    const sellPriceSum = trades.filter(trade => trade.sellUserId === user.id).reduce(sumPriceAccumulator, 0)
- //    if (buyPriceSum === 0 && sellPriceSum === 0) {
- //      log(`${user.name}さんは商品の売り買いをしていません`)
- //      return
- //    }
- //    const payPrice = buyPriceSum - sellPriceSum
- //    const message = `${lastWeekStart.format(DAYJS_FORMAT_STYLE)}~${lastWeekEnd.format(DAYJS_FORMAT_STYLE)}のレジ決済をお願いします\n使用金額: ${buyPriceSum}円\n売上金額: ${sellPriceSum}円\n支払い金額: ${payPrice}円\n${user.name}さん`
- //    await sendMessage(message, user.slack)
- //    OWNER_SLACK_USER_ID_LIST.forEach(async slackUserId => {
- //      await sendMessage(`===送信ログ===\n${message}\n==========`, slackUserId)
- //    })
- //  });
+  const events = await getAlertsEvents(dayjs().tz().hour());
+  events.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+  const event = events.find(ev=>ev.triggerDayOfWeek[dayjs().tz().day()]);
+
+  if(event){
+    log('event found!')
+    await postWebSignage({durationMillisecond:15000,url:encodeURI(`https://geekhouse-datastore.web.app/alert?message=${event.message}&image=${event.image}`)})
+  }
 
   log('compute finished')
 });

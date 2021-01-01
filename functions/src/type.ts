@@ -1,30 +1,10 @@
-export type Trade = {
-  barcode: string
-  buyUserId: number
-  buyUserName: string
-  classId: number
-  className: string
-  cost: number
-  costRate: number
-  date: Date
-  genreId: number
-  genreName: string
-  price: number
-  productId: string
-  productName: string
-  sellUserId: number
-  sellUserName: string
-  stook: number
-}
-
-export type User = {
-  barcode: string
-  birthyear: number
-  brandCode: number
-  enabled: Boolean
-  id: number
-  name: string
-  slack: string
+export type Alert = {
+  triggerDayOfWeek: [boolean]
+  triggerHour: number
+  enabled: boolean
+  message: string
+  image: string
+  createdAt: Date
 }
 
 export type Weather = {
@@ -110,4 +90,9 @@ export type WeatherResponse = {
   daily:[
       WeatherResponseDaily
   ]
+}
+
+export type Signage = {
+  url: string
+  durationMillisecond: number
 }
