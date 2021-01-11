@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/7.21.1/firebase-app.js"></script>
+  <script defer src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+  <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+  <title>メッセージボード</title>
+  <style>
+    img.emoji {
+      height: 1em;
+      width: 1em;
+      margin: 0 .05em 0 .1em;
+      vertical-align: -0.1em;
+      display: inline;
+    }
+    body {
+      font-family: 'Miriam Libre', sans-serif;
+    }
+  </style>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // show emoji
+      twemoji.parse(document.body);
+
+      const oneDayAgoDate = dayjs().subtract(1, 'day').toDate()
+      const messagesSnapshot = await firebase
+        .firestore()
+        .collection('messages')
+        .where('createdAt', '>', firebase.default.firestore.Timestamp.fromDate(oneDayAgoDate))
+        .orderBy('createdAt', 'desc')
+        .get();
+      const messages = messagesSnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+      if (messages.length === 0) return
+      const userSnapshot = await firebase.firestore().collection('users').get();
+      const users = userSnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+
+      const addMessage = (message, name, image) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <div class="bg-white border rounded-lg p-4 mb-8 mx-12 animate__animated animate__fadeInLeft">
+            <div class="flex">
+              <figure class="h-24 w-24 rounded-full overflow-hidden">
+                <img src="${image}" class="h-full w-full object-cover" />
+              </figure>
+              <div class="ml-12">
+                <p class="text-gray-500 text-left font-bold text-2xl">${name}</p>
+                <p class="text-left font-semibold text-3xl">${message}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById("messages").appendChild(div);
+      }
+
+      messages.forEach(message => {
+        const imageUrl = users.filter(user => user.slackUid === message.slackUid)[0].imageUrl
+        const name = users.filter(user => user.slackUid === message.slackUid)[0].name
+        console.log(imageUrl)
+        addMessage(message.text, name, imageUrl)
+      });
+
+    });
+  </script>
+</head>
+
+<body class="bg-indigo-500">
+  <h1 class="text-4xl text-center font-bold text-white mt-8 mb-8 animate__animated animate__bounceInUp">掲示板</h1>
+  <div class="messages" id="messages">
+  </div>
+  <p class="text-red-300 text-center font-bold text-2xl mt-32 animate__animated animate__fadeIn animate__delay-2s">/send [message] <small>(in #gee1 channel)</small></p>
+  <p class="text-white text-center mt-2 animate__animated animate__fadeIn animate__delay-2s">24時後に消えます</p>
+</body>
+
+
+</html>
