@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>天気表示</title>
+    <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.21.1/firebase-app.js"></script>
+    <script defer src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+
+    <style>
+      body {
+        font-family: 'Miriam Libre', sans-serif;
+      }
+      .container {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+      }
+      .title {
+        margin: 0;
+        font-size: 5em;
+        color: white;
+        font-weight: bold;
+      }
+      .text {
+        font-size: 3em;
+        color: white;
+      }
+      .indicator {
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body >
+    <div class="container animate__animated animate__fadeInDown animate__slower">
+      <div>
+      <h1 class="title">Weather</h1>
+      <div id="indicator" class="indicator">
+        <p class="text" id="indicator_text">...</p>
+      </div>
+      </div>
+    </div>
+
+    <script>
+      bubbly({
+        colorStart: '#3841B5',
+        colorStop: '#251BA9',
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        try {
+          let app = firebase.app();
+          const bathRef = firebase.firestore().collection('cached_values').doc('weather');
+
+          bathRef.onSnapshot((doc) => {
+            const weather = doc.data();
+            document.getElementById('indicator').innerHTML =  `<img src=${weather.weather.iconUrl}><p class="text">本日の天気は ${weather.weather.description}</p>`+
+                    `<p class="text">最高気温: ${weather.temp.max}℃  最低気温: ${weather.temp.min}℃</p> <p class="text">湿度: ${weather.humidity}％  気圧: ${weather.pressure} hPa</p>`;
+          })
+        } catch (e) {
+          console.error(e);
+          document.getElementById('indicator_text').innerHTML = 'エラーが発生しました';
+        }
+      });
+    </script>
+  </body>
+</html>
